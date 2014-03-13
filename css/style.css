@@ -1,0 +1,24 @@
+#header {
+    font-family: 'Raleway', sans-serif;
+    background-color: #3D99D9;
+}
+#header h1{
+    color: white;
+    
+}
+.coin {
+    color: white;
+    /*font-size:20px;*/
+}
+body{
+    background-color: #3D99D9;
+}
+
+table
+{
+    border-collapse: collapse;
+}
+table,th,td
+{
+    border:1px solid black;
+}
