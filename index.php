@@ -1,31 +1,28 @@
 <!DOCTYPE html>
-<html>
-<head>
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
-<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-</head>
-<body>
-<div id="header">
-<h1>BTC manager</h1>
-<h4>Based on <span class='coin'>coinbase</span></h4>
-</div>
+<!--<html>
 
-<?php
+-->
+<?php 
+echo "<html>";
+echo "<body>";
+echo "<div id=\"container\">";
+require_once("header.php");
+
+echo "<div id=\"body\">";
+
+require_once("api_key.php");
+require_once("coinbase-php/lib/Coinbase.php");
 #$page = $_SERVER['PHP_SELF'];
 #$sec = "5";
 #header("Refresh: $sec; url=$page");
 date_default_timezone_set('America/Los_Angeles');
-require_once("/Users/shahm6/Sites/mybtc/coinbase-php/lib/Coinbase.php");
-echo "<hr></hr>";
-$api_key="zmPEjhFNa0lQJL0L";
-$api_secret="eh0cTyTcDkwbe8fdLxcr0dRQJ6O9FJoL";
+
 
 $coinbase=Coinbase::withApiKey($api_key,$api_secret);
 
 $balance = $coinbase->getBalance();
 
 echo "<br>Current Balance: $". $balance." BTC";
-#echo 'Balance: ' . $coinbase->getBalance() . '<br>';
 
 $val=getCurrentValue($coinbase);
 echo "<br>Current Value: $".$val;
@@ -149,7 +146,19 @@ function calculate_difference($coinbase)
 
     # Print the difference
 }
+echo "</div>";
+echo "</body>";
+
+require_once("footer.php");
+
+echo "</div>";
+echo "</html>";
 ?>
 
-</body>
+
+<!--    </div>
+</boy>
+
 </html>
+
+-->
