@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<!--<html>
 
--->
 <?php 
 echo "<html>";
 echo "<body>";
@@ -17,8 +15,25 @@ require_once("coinbase-php/lib/Coinbase.php");
 #header("Refresh: $sec; url=$page");
 date_default_timezone_set('America/Los_Angeles');
 
-
 $coinbase=Coinbase::withApiKey($api_key,$api_secret);
+
+$sell_price = getCurrentSellPrice($coinbase);
+echo "<br>Sell Price: $".$sell_price;
+
+function getCurrentSellPrice($coinbase)
+{
+    #This price includes Coinbase's fee of 1% and the bank transfer fee of $0.15.
+    return $coinbase->getSellPrice('1');
+}
+
+$buy_price=getCurrentBuyPrice($coinbase);
+echo "<br>Buy Price: $".$buy_price;
+
+function getCurrentBuyPrice($coinbase)
+{    
+    #This price includes Coinbase's fee of 1% and the bank transfer fee of $0.15.
+    return $coinbase->getBuyPrice('1');
+}
 
 $balance = $coinbase->getBalance();
 
@@ -35,42 +50,6 @@ function getCurrentValue($coinbase)
     return $val;
 }
 
-
-$sell_price = getCurrentSellPrice($coinbase);
-echo "<br>Sell Price: $".$sell_price;
-
-function getCurrentSellPrice($coinbase)
-{
-    
-    return $coinbase->getSellPrice('1');
-}
-
-$buy_price=getCurrentBuyPrice($coinbase);
-echo "<br>Buy Price: $".$buy_price;
-
-function getCurrentBuyPrice($coinbase)
-{    
-    #echo "<br>This price includes Coinbase's fee of 1% and the bank transfer fee of $0.15.<br>";
-
-    return $coinbase->getBuyPrice('1');
-}
-
-#getTransactions($coinbase);
-
-function getTransactions($coinbase)
-{
-    echo "<br>";
-    $response = $coinbase->getTransactions();
-    echo "Number of transactions you have made so far : ".$response->total_count;
-    echo "<br>1st Transaction reported on : ".$response->transactions[0]->created_at;
-    echo "<br>1st Transaction amount is : ".$response->transactions[0]->amount->amount;
-
-    echo "<pre>";
-    var_dump($response);
-    echo "</pre>";
-}
-
-
 dispTransactions($coinbase);
 
 function dispTransactions($coinbase)
@@ -84,8 +63,9 @@ function dispTransactions($coinbase)
     #echo "Number of transactions".$noOfTrans;
 
     echo "<div id=\"transTable\">";
-    echo "<br>Your transaction history till now";
-    echo "<table>";
+    
+    echo "<table class=\"center\">";
+    echo "<caption>Transaction History</caption>";
     #$tableHeader = "<tr><th>No</th><th>Date</th><th>Amount</th><th>Sell/Buy</th><th>Status</th><th>Notes</th></tr>";
     $tableHeader = "<tr><th>No</th><th>Date</th><th>Amount</th><th>Status</th><th>Notes</th></tr>";
     echo $tableHeader;
@@ -120,7 +100,6 @@ function dispTransactions($coinbase)
     echo "</table>";
     echo "</div>";
 
-    #var_dump($response);
 }
 
 
@@ -134,18 +113,7 @@ function format_date($date)
     return date('F d, Y h:i:s A', strtotime($final_dt));
 }
 
-function calculate_difference($coinbase)
-{
-    # This function will sum all your current BTC transactions and give you an idea of how much will you earn / lose
-    # if you sell it now
 
-    # Parse notes of each transaction to get the amount
-    # Sum them up
-
-    # Get current value 
-
-    # Print the difference
-}
 echo "</div>";
 echo "</body>";
 
@@ -154,11 +122,3 @@ require_once("footer.php");
 echo "</div>";
 echo "</html>";
 ?>
-
-
-<!--    </div>
-</boy>
-
-</html>
-
--->
