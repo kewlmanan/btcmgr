@@ -1,0 +1,32 @@
+Btcmgr -  A lightweight web app which will keep you up to date of the most important things 
+you need to know about your coinbase bitcoin account.
+
+Best Viewed in : Google Chrome / Safari 
+
+What it shows :
+
+1) Current Selling Price on coinbase
+2) Current Buying Price on coinbase
+3) Your balance in BTC
+4) Your balanc value in $
+5) Transaction history with most relevant fields
+
+NOTE - Selling / Buying price is based on 1 BTC. Balance is calculated using that.
+Also it includes Coinbase's fee of 1% and the bank transfer fee of $0.15 to help you get a clear
+idea of how much you will make / lose
+
+The page auto-refreshes every 15 seconds by default
+
+Things Reqd : 
+
+1) A web server .. Standard apache or any
+2) Clone the repo in the webserver's home dir
+
+3) Modify the api_key.php with :
+
+$api_key="COINBASE API KEY";
+$api_secret="COINBASE API KEY SECRET";
+
+Go to browser and type :
+
+http://localhost/mybtc/index.php

@@ -5,20 +5,34 @@ echo "<html>";
 echo "<body>";
 echo "<div id=\"container\">";
 require_once("header.php");
-
-echo "<div id=\"body\">";
-
 require_once("api_key.php");
 require_once("coinbase-php/lib/Coinbase.php");
+
 #$page = $_SERVER['PHP_SELF'];
-#$sec = "5";
+#$sec = "15";
 #header("Refresh: $sec; url=$page");
+
 date_default_timezone_set('America/Los_Angeles');
+
+echo "<div id=\"body\">";
 
 $coinbase=Coinbase::withApiKey($api_key,$api_secret);
 
 $sell_price = getCurrentSellPrice($coinbase);
-echo "<br>Sell Price: $".$sell_price;
+$buy_price=getCurrentBuyPrice($coinbase);
+$balance = $coinbase->getBalance();
+$val=getCurrentValue($coinbase);
+
+#echo "<p style=\"position:absolute;left:200px;\">Balance: $". $balance." BTC";
+echo "<p style=\"float:left;margin-left:15%\">Balance: $". $balance." BTC";
+echo "&nbsp&nbsp Value: $".$val."</p>";
+#echo str_repeat('&nbsp;', 125);
+echo "<p style=\"float:right;margin-right:15%\">";  
+echo "&nbsp Sell: $".$sell_price;
+echo "&nbsp Buy: $".$buy_price."</p><br>";
+echo "<br><hr style=\"border;none;width:75%;color:white;\">";
+
+dispTransactions($coinbase);
 
 function getCurrentSellPrice($coinbase)
 {
@@ -26,21 +40,11 @@ function getCurrentSellPrice($coinbase)
     return $coinbase->getSellPrice('1');
 }
 
-$buy_price=getCurrentBuyPrice($coinbase);
-echo "<br>Buy Price: $".$buy_price;
-
 function getCurrentBuyPrice($coinbase)
 {    
     #This price includes Coinbase's fee of 1% and the bank transfer fee of $0.15.
     return $coinbase->getBuyPrice('1');
 }
-
-$balance = $coinbase->getBalance();
-
-echo "<br>Current Balance: $". $balance." BTC";
-
-$val=getCurrentValue($coinbase);
-echo "<br>Current Value: $".$val;
 
 function getCurrentValue($coinbase)
 {
@@ -50,11 +54,9 @@ function getCurrentValue($coinbase)
     return $val;
 }
 
-dispTransactions($coinbase);
-
 function dispTransactions($coinbase)
 {
-    # 
+ 
     $response = $coinbase->getTransactions();
     $noOfPages= $response->num_pages;
     $noOfTrans = $response->total_count;
